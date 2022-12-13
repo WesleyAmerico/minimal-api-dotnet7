@@ -22,4 +22,30 @@ app.UseAuthorization();
 
 app.MapControllers(); //mapeando os contoles, ligando os dados com a pasta controllers
 
+MapRoutes(app);
+
+#region Rotas utilizando Minimal API
+void MapRoutes(WebApplication app)
+{
+    //duas formas de fazer a mesma coisa a primeira utilizando arrow function
+    //app.MapGet("/", () => new {Mensagem = "Bem vindo a API"});
+    app.MapGet("/", () =>  {
+        var retorno = new {Mensagem = "Bem vindo a API"};
+        return retorno;
+    });
+    //fim das formas a seguir utilizarei apenas arrow function
+    app.MapGet("/recebe-parametro", (HttpRequest request, HttpResponse response, string nome) => 
+    {
+        nome = $"""
+        Alterando parametro recebido {nome}
+        """;
+        var objetoDeRetorno = new {
+            ParametroPassado = nome,
+            Mensagem = "Muito bem alunos passamos um parametro por querystring"
+        };
+    });
+}
+
+#endregion
+
 app.Run(); //Iniciando aplicação
